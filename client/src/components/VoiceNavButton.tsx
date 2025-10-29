@@ -1,4 +1,6 @@
 import { useState } from 'react';
+
+import { getApiUrl } from '../config';
 import { createPortal } from 'react-dom';
 import { Button } from './ui/button';
 import { Mic, MicOff } from 'lucide-react';
@@ -29,7 +31,7 @@ export default function VoiceNavButton() {
       const formData = new FormData();
       formData.append('file', audioFile);
 
-      const res = await fetch('http://localhost:3000/api/voice/command', {
+      const res = await fetch(getApiUrl('/voice/command'), {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -108,7 +110,7 @@ export default function VoiceNavButton() {
       scheduledDateTime = new Date(`${scheduledDate}T${scheduledTime}`);
     }
     
-    await fetch('http://localhost:3000/api/reminders', {
+    await fetch(getApiUrl('/reminders'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -1,4 +1,6 @@
 import { useState } from 'react';
+
+import { getApiUrl } from '../config';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -37,7 +39,7 @@ export default function EventsPage() {
   const { data: events = [] } = useQuery<Event[]>({
     queryKey: ['events', locationFilter, dateFilter, specificDate],
     queryFn: async () => {
-      let url = 'http://localhost:3000/api/events';
+      let url = getApiUrl('/events');
       const params = new URLSearchParams();
       
       if (locationFilter) {
@@ -100,7 +102,7 @@ export default function EventsPage() {
   const createEventMutation = useMutation({
     mutationFn: async (data: any) => {
       const token = localStorage.getItem('auth_token');
-      const res = await fetch('http://localhost:3000/api/events', {
+      const res = await fetch(getApiUrl('/events'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -121,7 +123,7 @@ export default function EventsPage() {
   const registerMutation = useMutation({
     mutationFn: async (id: string) => {
       const token = localStorage.getItem('auth_token');
-      const res = await fetch(`http://localhost:3000/api/events/${id}/register`, {
+      const res = await fetch(getApiUrl(`/events/${id}/register`), {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` },
       });

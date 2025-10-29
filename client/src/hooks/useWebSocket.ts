@@ -14,7 +14,7 @@ export function useWebSocket(otherUserId: string | null) {
   const [isConnected, setIsConnected] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const wsRef = useRef<WebSocket | null>(null);
-  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const reconnectTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const connect = useCallback(() => {
     if (!otherUserId) return;
@@ -23,7 +23,8 @@ export function useWebSocket(otherUserId: string | null) {
       const token = getToken();
       if (!token) return;
 
-      const ws = new WebSocket(`ws://localhost:3000/ws?token=${token}`);
+      const wsUrl = import.meta.env.VITE_WS_URL || 'ws://localhost:3000';
+      const ws = new WebSocket(`${wsUrl}/ws?token=${token}`);
       wsRef.current = ws;
 
       ws.onopen = () => {

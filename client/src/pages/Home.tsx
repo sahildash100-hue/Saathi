@@ -8,6 +8,7 @@ import { Moon, Sun, LogOut, User, Calendar, MessageSquare, Plane, Bell, Pill, Us
 import { removeToken } from '../lib/auth';
 import { useReminderAlarm } from '../hooks/useReminderAlarm';
 import { usePrescriptionAlarm } from '../hooks/usePrescriptionAlarm';
+import { getApiUrl } from '../config';
 
 interface Reminder {
   _id: string;
@@ -36,7 +37,7 @@ export default function Home() {
     queryKey: ['reminders'],
     queryFn: async () => {
       const token = localStorage.getItem('auth_token');
-      const res = await fetch('http://localhost:3000/api/reminders', {
+      const res = await fetch(getApiUrl('/reminders'), {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (!res.ok) throw new Error('Failed to fetch reminders');
@@ -49,7 +50,7 @@ export default function Home() {
     queryKey: ['prescriptions'],
     queryFn: async () => {
       const token = localStorage.getItem('auth_token');
-      const res = await fetch('http://localhost:3000/api/prescriptions', {
+      const res = await fetch(getApiUrl('/prescriptions'), {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (!res.ok) throw new Error('Failed to fetch prescriptions');
@@ -83,7 +84,7 @@ export default function Home() {
   const deleteReminder = useMutation({
     mutationFn: async (id: string) => {
       const token = localStorage.getItem('auth_token');
-      const res = await fetch(`http://localhost:3000/api/reminders/${id}`, {
+      const res = await fetch(getApiUrl(`/reminders/${id}`), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
       });
@@ -96,7 +97,7 @@ export default function Home() {
   const deletePrescription = useMutation({
     mutationFn: async (id: string) => {
       const token = localStorage.getItem('auth_token');
-      const res = await fetch(`http://localhost:3000/api/prescriptions/${id}`, {
+      const res = await fetch(getApiUrl(`/prescriptions/${id}`), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
       });

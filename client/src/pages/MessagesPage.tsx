@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+
+import { getApiUrl } from '../config';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -39,7 +41,7 @@ export default function MessagesPage() {
     queryKey: ['conversations'],
     queryFn: async () => {
       const token = localStorage.getItem('auth_token');
-      const res = await fetch('http://localhost:3000/api/messages/conversations', {
+      const res = await fetch(getApiUrl('/messages/conversations'), {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (!res.ok) throw new Error('Failed to fetch conversations');
@@ -52,7 +54,7 @@ export default function MessagesPage() {
     queryFn: async () => {
       if (!selectedChat) return [];
       const token = localStorage.getItem('auth_token');
-      const res = await fetch(`http://localhost:3000/api/messages/with/${selectedChat}`, {
+      const res = await fetch(getApiUrl(`/messages/with/${selectedChat}`), {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (!res.ok) throw new Error('Failed to fetch messages');
@@ -86,7 +88,7 @@ export default function MessagesPage() {
     queryFn: async () => {
       if (!searchQuery || searchQuery.length < 2) return [];
       const token = localStorage.getItem('auth_token');
-      const res = await fetch(`http://localhost:3000/api/messages/search?query=${searchQuery}`, {
+      const res = await fetch(getApiUrl(`/messages/search?query=${searchQuery}`), {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (!res.ok) throw new Error('Search failed');

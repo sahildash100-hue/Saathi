@@ -1,4 +1,6 @@
 import { useState } from 'react';
+
+import { getApiUrl } from '../config';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Button } from '../components/ui/button';
 import { ArrowLeft, Plus, MapPin, Calendar, Users } from 'lucide-react';
@@ -42,7 +44,7 @@ export default function TripsPage() {
   const { data: trips = [] } = useQuery<Trip[]>({
     queryKey: ['trips', selectedCategory],
     queryFn: async () => {
-      let url = 'http://localhost:3000/api/trips';
+      let url = getApiUrl('/trips');
       if (selectedCategory) {
         url += `?category=${selectedCategory}`;
       }
@@ -55,7 +57,7 @@ export default function TripsPage() {
   const createTripMutation = useMutation({
     mutationFn: async (data: any) => {
       const token = localStorage.getItem('auth_token');
-      const res = await fetch('http://localhost:3000/api/trips', {
+      const res = await fetch(getApiUrl('/trips'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -76,7 +78,7 @@ export default function TripsPage() {
   const joinTripMutation = useMutation({
     mutationFn: async (id: string) => {
       const token = localStorage.getItem('auth_token');
-      const res = await fetch(`http://localhost:3000/api/trips/${id}/join`, {
+      const res = await fetch(getApiUrl(`/trips/${id}/join`), {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` },
       });

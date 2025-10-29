@@ -1,4 +1,6 @@
 import { useState } from 'react';
+
+import { getApiUrl } from '../config';
 import { Button } from './ui/button';
 import { Mic, MicOff } from 'lucide-react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -15,7 +17,7 @@ export default function SimpleVoiceButton() {
       const formData = new FormData();
       formData.append('file', audioFile);
 
-      const res = await fetch('http://localhost:3000/api/voice/command', {
+      const res = await fetch(getApiUrl('/voice/command'), {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -32,7 +34,7 @@ export default function SimpleVoiceButton() {
       // If transcription contains reminder-like text, create a reminder
       if (data.text) {
         const token = localStorage.getItem('auth_token');
-        await fetch('http://localhost:3000/api/reminders', {
+        await fetch(getApiUrl('/reminders'), {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

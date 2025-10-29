@@ -1,4 +1,6 @@
 import { useState, useRef } from 'react';
+
+import { getApiUrl } from '../config';
 import { useLocation } from 'wouter';
 import { Button } from '../components/ui/button';
 import { useMutation } from '@tanstack/react-query';
@@ -80,7 +82,7 @@ export default function FindFriendsPage() {
   const sendFriendMessage = useMutation({
     mutationFn: async (toUserId: string) => {
       const token = localStorage.getItem('auth_token');
-      const res = await fetch('http://localhost:3000/api/messages/send', {
+      const res = await fetch(getApiUrl('/messages/send'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

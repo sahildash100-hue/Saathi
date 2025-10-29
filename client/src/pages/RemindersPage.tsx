@@ -1,4 +1,6 @@
 import { Button } from '../components/ui/button';
+
+import { getApiUrl } from '../config';
 import { ArrowLeft } from 'lucide-react';
 import { useLocation } from 'wouter';
 import ReminderBloc from '../components/ReminderBloc';
@@ -23,7 +25,7 @@ export default function RemindersPage() {
     queryKey: ['reminders'],
     queryFn: async () => {
       const token = localStorage.getItem('auth_token');
-      const res = await fetch('http://localhost:3000/api/reminders', {
+      const res = await fetch(getApiUrl('/reminders'), {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -40,7 +42,7 @@ export default function RemindersPage() {
   const deleteReminder = useMutation({
     mutationFn: async (id: string) => {
       const token = localStorage.getItem('auth_token');
-      const res = await fetch(`http://localhost:3000/api/reminders/${id}`, {
+      const res = await fetch(getApiUrl(`/reminders/${id}`), {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,

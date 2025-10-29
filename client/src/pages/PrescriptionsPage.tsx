@@ -1,4 +1,6 @@
 import { useState } from 'react';
+
+import { getApiUrl } from '../config';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useLocation } from 'wouter';
 import { Button } from '../components/ui/button';
@@ -33,7 +35,7 @@ export default function PrescriptionsPage() {
     queryKey: ['prescriptions'],
     queryFn: async () => {
       const token = localStorage.getItem('auth_token');
-      const res = await fetch('http://localhost:3000/api/prescriptions', {
+      const res = await fetch(getApiUrl('/prescriptions'), {
         headers: { 'Authorization': `Bearer ${token}` },
       });
       if (!res.ok) throw new Error('Failed to fetch prescriptions');
@@ -45,7 +47,7 @@ export default function PrescriptionsPage() {
   const createPrescription = useMutation({
     mutationFn: async () => {
       const token = localStorage.getItem('auth_token');
-      const res = await fetch('http://localhost:3000/api/prescriptions', {
+      const res = await fetch(getApiUrl('/prescriptions'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,7 +70,7 @@ export default function PrescriptionsPage() {
   const deletePrescription = useMutation({
     mutationFn: async (id: string) => {
       const token = localStorage.getItem('auth_token');
-      const res = await fetch(`http://localhost:3000/api/prescriptions/${id}`, {
+      const res = await fetch(getApiUrl(`/prescriptions/${id}`), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
       });
