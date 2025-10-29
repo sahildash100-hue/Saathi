@@ -1,0 +1,13 @@
+# Root should have NO node_modules
+node_modules/
+package-lock.json
+.DS_Store
+*.log
+
+# Environment files
+.env.local
+.env.*.local
+
+# Data directory (audio uploads)
+server/data/audio/*
+
